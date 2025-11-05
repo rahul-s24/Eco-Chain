@@ -41,6 +41,8 @@ export const SignupPage = () => {
         phone: phone.trim(),
         address: address.trim(),
         userType,
+        points: 0,
+        tier: 'Bronze',
         createdAt: new Date(),
         updatedAt: new Date(),
       };

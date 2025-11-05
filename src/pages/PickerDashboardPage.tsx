@@ -150,7 +150,7 @@ export const PickerDashboardPage = () => {
     <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-green-50 p-6">
       <div className="max-w-5xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-green-800 drop-shadow-sm">SafaiSetu Dashboard</h1>
+          <h1 className="text-4xl font-bold text-green-800 drop-shadow-sm">Eco Chain Dashboard</h1>
           <div className="flex items-center space-x-6">
             {/* Availability Toggle */}
             <div className="flex items-center space-x-4 bg-white px-6 py-3 rounded-lg shadow-lg transition-all duration-200">

@@ -2,80 +2,18 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Helper function to check if user is authenticated
-    function isAuthenticated() {
-      return request.auth != null;
-    }
 
-    // Helper function to check if user owns the document
-    function isOwner(userId) {
-      return isAuthenticated() && request.auth.uid == userId;
-    }
-
-    // Helper function to check if user is a picker
-    function isPicker() {
-      return isAuthenticated() && 
-        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.userType == 'picker';
-    }
-
-    // Helper function to check if user is a generator
-    function isGenerator() {
-      return isAuthenticated() && 
-        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.userType == 'generator';
-    }
-
-    // Rules for scheduled_pickups collection
-    match /scheduled_pickups/{pickupId} {
-      allow read: if isAuthenticated();
-      
-      allow create: if isGenerator() && 
-        request.resource.data.userId == request.auth.uid;
-      
-      allow update: if isAuthenticated() && (
-        // Generator can cancel their own pickup
-        (isGenerator() && 
-         resource.data.userId == request.auth.uid &&
-         resource.data.status == 'Pending' &&
-         request.resource.data.status == 'Cancelled') ||
-        
-        // Picker can accept pending pickup
-        (isPicker() && 
-         resource.data.status == 'Pending' &&
-         request.resource.data.status == 'Assigned' &&
-         request.resource.data.assignedTo == request.auth.uid) ||
-        
-        // Picker can mark assigned pickup as completed
-        (isPicker() && 
-         resource.data.status == 'Assigned' &&
-         resource.data.assignedTo == request.auth.uid &&
-         request.resource.data.status == 'Completed') ||
-        
-        // Generator can rate completed pickup
-        (isGenerator() && 
-         resource.data.userId == request.auth.uid &&
-         resource.data.status == 'Completed' &&
-         !resource.data.generatorRating &&
-         request.resource.data.generatorRating != null) ||
-        
-        // Picker can rate completed pickup
-        (isPicker() && 
-         resource.data.assignedTo == request.auth.uid &&
-         resource.data.status == 'Completed' &&
-         !resource.data.pickerRating &&
-         request.resource.data.pickerRating != null)
-      );
-      
-      allow delete: if false; // No deletes allowed
-    }
-
-    // Rules for users collection
-    match /users/{userId} {
-      allow read: if isAuthenticated();
-      allow create: if isAuthenticated() && request.auth.uid == userId;
-      allow update: if isOwner(userId);
-      allow delete: if isOwner(userId);
+    // This rule allows anyone with your Firestore database reference to view, edit,
+    // and delete all data in your Firestore database. It is useful for getting
+    // started, but it is configured to expire after 30 days because it
+    // leaves your app open to attackers. At that time, all client
+    // requests to your Firestore database will be denied.
+    //
+    // Make sure to write security rules for your app before that time, or else
+    // all client requests to your Firestore database will be denied until you Update
+    // your rules
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(2025, 12, 4);
     }
   }
-} 
+}

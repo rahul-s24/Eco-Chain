@@ -179,7 +179,13 @@ export const DashboardPage = () => {
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">SafaiSetu Dashboard</h1>
+          <h1 className="text-3xl font-bold text-gray-800">Eco Chain Dashboard</h1>
+          <div className="flex items-center bg-yellow-50 px-4 py-2 rounded-lg shadow-sm border border-yellow-200">
+            <Star className="w-5 h-5 text-yellow-500 mr-2" />
+              <span className="text-lg font-semibold text-yellow-700">
+                Reward Points: {profile?.points ?? 0}
+            </span>
+          </div>
           <div className="flex items-center space-x-4">
             <Link
               to="/profile"
