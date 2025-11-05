@@ -1,6 +1,6 @@
-# SafaiSetu
+# Eco Chain
 
-SafaiSetu is a web application designed to streamline urban waste management in India by connecting waste generators directly with informal waste pickers, aiming to improve recycling rates and empower the picker community with fair opportunities.
+Eco Chain is a web application designed to streamline urban waste management in India by connecting waste generators directly with informal waste pickers, aiming to improve recycling rates and empower the picker community with fair opportunities.
 
 ## Problem Addressed
 
